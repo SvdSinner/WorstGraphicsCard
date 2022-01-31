@@ -48,7 +48,7 @@ namespace ImageProcessor
             var destInfo = new BitmapInfo { Width = 100, Height = 75, PixelFormat = PixelFormats.Bgr24, Dpi = 24 };
 
             var colors = new Color[destInfo.Width, destInfo.Height];
-            var averageDivisor = Math.Pow(Math.Min(1, Math.Floor(scale)), 2);
+            var averageDivisor = Math.Pow(Math.Max(1, Math.Floor(scale)), 2);
             //Loop through original to get average colors
             for (int i = 0; i < destInfo.Width; i++)
                 for (int j = 0; j < destInfo.Height; j++)
@@ -56,13 +56,13 @@ namespace ImageProcessor
                     float r = 0, g = 0, b = 0;
                     var minX = (int)Math.Floor(x + i * scale * .99);
                     var minY = (int)Math.Floor(y + j * scale * 74 / 75);
-                    if (minX < 0 || minY < 0 || minX + Math.Min(scale, 1) > sourceWidth || minY + Math.Min(scale, 1) > sourceHeight)
+                    if (minX < 0 || minY < 0 || minX + Math.Max(scale, 1) > sourceWidth || minY + Math.Max(scale, 1) > sourceHeight)
                     {
                         colors[i, j] = Colors.Black;
                         continue;
                     }
-                    for (int k = minX; k < minX + Math.Min(scale, 1); k++)
-                        for (int l = minY; l < minY + Math.Min(scale, 1); l++)
+                    for (int k = minX; k < minX + Math.Max(scale, 1); k++)
+                        for (int l = minY; l < minY + Math.Max(scale, 1); l++)
                         {
                             var pixel = GetPixel(pixelBuffer, sourceStride, k, l, sourceBpp);
                             r += pixel.R;
